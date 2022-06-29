@@ -12,20 +12,27 @@
 
 module Schema where
 
--- import Data.Text as T
--- import GHC.Generics
-
+import Data.Text as T
+import GHC.Generics
 import Mu.Quasi.GRpc
 import Mu.Schema
 
 grpc "TheSchema" id "demo.proto"
 
--- A. Map to Haskell types
--- data Message
---   = Message { ... }
---   deriving ( Eq, Show, Generic
---            , ToSchema   TheSchema "Message"
---            , FromSchema TheSchema "Message" )
+data HelloRequestMessage = HelloRequestMessage {name :: T.Text}
+  deriving
+    ( Eq,
+      Show,
+      Generic,
+      ToSchema TheSchema "HelloRequest",
+      FromSchema TheSchema "HelloRequest"
+    )
 
--- B. Use optics
-type Message = Term TheSchema (TheSchema :/: "Message")
+data HelloReplyMessage = HelloReplyMessage {message :: T.Text}
+  deriving
+    ( Eq,
+      Show,
+      Generic,
+      ToSchema TheSchema "HelloReply",
+      FromSchema TheSchema "HelloReply"
+    )
